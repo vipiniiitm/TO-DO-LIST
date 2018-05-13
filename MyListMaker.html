@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My To Do List Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="jquery-ui.min.css">
+    <script src="external/jquery/jquery.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $( "#date" ).datepicker();
+            $("#taskbody").tabs();
+            $("ul").sortable({axis:"x",containment:"#taskbody"});
+            $("ol").sortable({axis:"y",containment:"#taskbody"});
+            $("#buttonhead").button().click(function(){
+                $("#maintaskdialog").dialog({width:400,resizable:false,modal:true,
+                    buttons:{
+                        "Add New Task":function(){
+                            var mainTaskName=$("#maintask").val();
+                            $("<li><a href='#" + mainTaskName +"'>" + mainTaskName + "</a></li>").appendTo("#mainhead");
+                            $("<ol id='" + mainTaskName + "'></ol>").appendTo("#taskbody");
+                            $("#taskbody").tabs("refresh");
+                            var tabCount=$("#taskbody .ui-tabs-nav li").length;
+                            $("#taskbody").tabs("option", "active",tabCount-1); 
+                            $("#maintask").val("");
+                            $(this).dialog("close");
+                        },
+                        "Cancel":function(){
+                            $("#maintask").val("");
+                            $(this).dialog("close");
+                        }
+                   }
+                });
+            });
+        }); 
+    </script>
+    <style>
+        #outer {
+            width:750px;
+            height:400px;
+            margin:20px auto;
+            border:2px solid rgb(57, 113, 235);
+        }
+
+        #taskbody {
+            margin:5px;
+        }
+
+        h1{
+            text-align: center;
+            color:rgb(57, 113, 235);
+        }
+
+        ol li{
+            border: 2px dotted rgb(57, 113, 235);
+            margin-bottom:5px;
+            cursor:pointer;
+            padding:5px;
+        }
+
+        ol li:hover {
+            background-color: rgb(236, 159, 57);
+        }
+
+        #topic{
+            font-family: 'Courier New', Courier, monospace;
+            background-color: rgb(236, 159, 57);
+        }
+
+        #buttonhead{
+            margin-left:565px;
+            margin-bottom:5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="topic">
+                <h1>MY TO DO LIST</h1>
+                <button type="button" id="buttonhead">Add New Task Head</button>
+        </div>
+        <div id="taskbody">
+           <ul id="mainhead">
+               <li> <a href="#personal">Personal Task</a></li>
+               <li> <a href="#work">Work Task</a></li>
+           </ul>
+           <ol id="personal">
+               <li><input type="checkbox">Complete the jquery Project</li>
+               <li><input type="checkbox">Start the payment portal using Stripe API</li>
+           </ol>
+           <ol id="work">
+            <li><input type="checkbox">Apply at internshala</li>
+            <li><input type="checkbox">Read for interview</li>
+           </ol>
+        </div>
+        <div id="maintaskdialog" style="display:none" title="Add a Main Task">
+            <label for="maintask" >Main Task Name:</label><input type="text" id="maintask">
+        </div>
+    </div>
+</body>
+</html>
